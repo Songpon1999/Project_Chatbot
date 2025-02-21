@@ -1,133 +1,32 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitBot</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #00bcd4, #4caf50);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .chat-container {
-            width: 360px;
-            height: 600px;
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-        }
-        .chatbox {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 12px;
-            background: #fafafa;
-        }
-        .message {
-            margin: 10px 0;
-            padding: 12px 18px;
-            border-radius: 20px;
-            background-color: #e4e4e4;
-            max-width: 75%;
-            display: inline-block;
-        }
-        .user-message {
-            background-color: #4CAF50;
-            color: white;
-            align-self: flex-end;
-        }
-        .bot-message {
-            background-color: #e5e5e5;
-            color: #333;
-            align-self: flex-start;
-        }
-        .input-box {
-            padding: 12px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            font-size: 14px;
-            width: calc(100% - 24px);
-        }
-        .send-btn {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 12px;
-            cursor: pointer;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <div class="chat-container">
-        <div class="chatbox" id="chatbox">
-            <div class="message bot-message">สวัสดีครับ! มีอะไรที่ผมสามารถช่วยคุณเกี่ยวกับการออกกำลังกายได้บ้าง?</div>
-        </div>
-        <input type="text" class="input-box" id="userInput" placeholder="ถามเกี่ยวกับการออกกำลังกายได้เลย!" onkeydown="if(event.key === 'Enter') sendMessage()">
-        <button class="send-btn" onclick="sendMessage()">ส่งข้อความ</button>
-    </div>
-    
-    <script>
-        const responses = {
-            "กระโดดตบ": "กระโดดตบช่วยเพิ่มความแข็งแรงให้หัวใจและระบบไหลเวียนโลหิต.",
-            "วิดพื้น": "วิดพื้นช่วยฝึกกล้ามเนื้อแขนและหน้าอก.",
-            "สควอท": "สควอทช่วยฝึกขาและสะโพก ทำให้ร่างกายแข็งแรง.",
-            "แพลงก์": "แพลงก์ช่วยฝึกความแข็งแกร่งของลำตัวและกล้ามเนื้อแกนกลาง.",
-            "เดิน": "การเดินช่วยเผาผลาญแคลอรี่และทำให้หัวใจแข็งแรง.",
-            "วิ่ง": "การวิ่งช่วยเพิ่มความทนทานของหัวใจและเผาผลาญไขมัน.",
-            "ปั่นจักรยาน": "ปั่นจักรยานช่วยเผาผลาญแคลอรี่และฝึกกล้ามเนื้อขา.",
-            "โยคะ": "โยคะช่วยยืดเหยียดกล้ามเนื้อและเสริมความยืดหยุ่น.",
-            "คาร์ดิโอ": "คาร์ดิโอช่วยเพิ่มการทำงานของหัวใจและระบบไหลเวียนโลหิต.",
-            "ดัมเบล": "การออกกำลังกายด้วยดัมเบลช่วยเสริมสร้างกล้ามเนื้อแขนและขา.",
-            "ยกน้ำหนัก": "การยกน้ำหนักช่วยเสริมสร้างกล้ามเนื้อและความแข็งแกร่งของร่างกาย."
-        };
+<script>
+    function sendMessage() {
+        const userInput = document.getElementById('userInput').value.trim();
+        const chatbox = document.getElementById('chatbox');
+        if (!userInput) return;
 
-        function sendMessage() {
-            const userInput = document.getElementById('userInput').value.trim();
-            const chatbox = document.getElementById('chatbox');
-            if (!userInput) return;
-            
-            const userMessageDiv = document.createElement("div");
-            userMessageDiv.classList.add("message", "user-message");
-            userMessageDiv.textContent = userInput;
-            chatbox.appendChild(userMessageDiv);
-            document.getElementById('userInput').value = "";
-            
-            let botResponse = responses[userInput] || "ขอโทษครับ ผมไม่เข้าใจคำถามนั้น ลองถามใหม่ครับ";
+        const userMessageDiv = document.createElement("div");
+        userMessageDiv.classList.add("message", "user-message");
+        userMessageDiv.textContent = userInput;
+        chatbox.appendChild(userMessageDiv);
+        document.getElementById('userInput').value = "";
 
-            // เพิ่มฟังก์ชันตรวจสอบคำถามที่ยืดหยุ่นขึ้น
-            if (userInput.toLowerCase().match(/คาร์ดิโอ|cardio/)) {
-                botResponse = "การออกกำลังกายแบบคาร์ดิโอ (Cardio) เป็นการเพิ่มการทำงานของหัวใจ เช่น:\n1. วิ่ง\n2. กระโดด\n3. ปั่นจักรยาน\n4. โยคะ\n5. แพลงก์\nออกกำลังกายแบบคาร์ดิโอ 20-30 นาทีช่วยให้หัวใจแข็งแรงและเผาผลาญแคลอรี่!";
-            } else if (userInput.toLowerCase().match(/ความแข็งแกร่ง|strength training/)) {
-                botResponse = "การออกกำลังกายเพิ่มความแข็งแกร่ง (Strength Training) ช่วยเสริมกล้ามเนื้อ เช่น:\n1. วิดพื้น (Push-ups)\n2. ดัมเบล (Dumbbell)\n3. สควอท (Squats)\n4. การยกน้ำหนัก (Weightlifting)\nการฝึกฝนกล้ามเนื้ออย่างสม่ำเสมอช่วยเพิ่มความแข็งแกร่ง!";
-            } else if (userInput.toLowerCase().match(/ดัมเบล|dumbbell/)) {
-                botResponse = "การออกกำลังกายด้วยดัมเบล (Dumbbell) ช่วยเสริมสร้างกล้ามเนื้อแขนและขา เช่น:\n1. การยกดัมเบลขึ้นเหนือศีรษะ (Overhead Dumbbell Press)\n2. การยกดัมเบลข้างลำตัว (Dumbbell Rows)\n3. การยกดัมเบลออกด้านข้าง (Lateral Raises)\nดัมเบลช่วยให้กล้ามเนื้อแข็งแรงขึ้นและเพิ่มพลังในการออกกำลังกาย!";
-            } else if (userInput.toLowerCase().match(/ยกน้ำหนัก|weightlifting/)) {
-                botResponse = "การยกน้ำหนัก (Weightlifting) เป็นการออกกำลังกายที่ช่วยเสริมสร้างกล้ามเนื้อและความแข็งแกร่งของร่างกาย เช่น:\n1. การยกบาร์เบล (Barbell Lifts)\n2. การยกน้ำหนักบนเครื่อง (Machine Weights)\n3. การฝึกยกน้ำหนักแบบโอลิมปิก (Olympic Lifting)\nการยกน้ำหนักช่วยเพิ่มความแข็งแกร่งของร่างกายและช่วยเพิ่มมวลกล้ามเนื้อ!";
-            } else if (userInput.toLowerCase().match(/คลิปการออกกำลังกาย|exercise video/)) {
-                botResponse = "คุณสามารถดูคลิปการออกกำลังกายแล้วทำตามได้เลยครับ: [คลิปออกกำลังกายแบบง่ายๆ] https://youtu.be/2_aeIBN5AHA";
-            } else if (userInput.toLowerCase().match(/กินอะไรก่อนออกกำลังกาย|what to eat before exercise/)) {
-                botResponse = "ก่อนออกกำลังกาย ควรกินอาหารที่มีโปรตีนและคาร์โบไฮเดรตเพื่อให้พลังงาน เช่น:\n1. โยเกิร์ตผสมกับผลไม้\n2. ขนมปังโฮลวีทกับไข่ต้ม\n3. กล้วยและเนยถั่ว\n4. สมูทตี้โปรตีน\nควรทานประมาณ 30-60 นาที ก่อนออกกำลังกายเพื่อให้ร่างกายมีพลังงานพอเหมาะครับ!";
-            }
-
-            setTimeout(() => {
-                const botMessageDiv = document.createElement("div");
-                botMessageDiv.classList.add("message", "bot-message");
-                botMessageDiv.textContent = botResponse;
-                chatbox.appendChild(botMessageDiv);
-                chatbox.scrollTop = chatbox.scrollHeight;
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
+        fetch('/get_response', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_input: userInput })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const botMessageDiv = document.createElement("div");
+            botMessageDiv.classList.add("message", "bot-message");
+            botMessageDiv.textContent = data.response;
+            chatbox.appendChild(botMessageDiv);
+            chatbox.scrollTop = chatbox.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
